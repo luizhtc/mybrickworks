@@ -38,6 +38,8 @@ df = (
     spark
         .read
         .option("header", True)
+        .option("multiLine", True)
+        .option("escape", '"')
         .format("csv")
         .load(csv_file_path)
         .transform(add_metadata)
