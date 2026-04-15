@@ -43,7 +43,7 @@ orders.join(customers, on="customer_id", how="left") \
 
 # COMMAND ----------
 
-silver_orders =\
+orders_transformed =\
 orders_join.select(
     "order_id",
     "customer_unique_id",
@@ -67,4 +67,10 @@ orders_join.select(
 
 # COMMAND ----------
 
-silver_orders.write.format("delta").mode("overwrite").saveAsTable(f"`cat_olist`.`sch_silver`.`silver_orders`")
+(
+    orders_transformed
+        .write
+        .format("delta")
+        .mode("overwrite")
+        .saveAsTable(f"`cat_olist`.`sch_silver`.`orders`")
+)

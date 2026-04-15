@@ -21,7 +21,7 @@ reviews.select(
 
 # COMMAND ----------
 
-silver_reviews = (
+reviews_transformed = (
     reviews_select
         .withColumn(
             "sentiment_bucket",
@@ -43,4 +43,10 @@ silver_reviews = (
 
 # COMMAND ----------
 
-silver_reviews.write.format("delta").mode("overwrite").saveAsTable(f"`cat_olist`.`sch_silver`.`silver_reviews`")
+(
+    reviews_transformed
+        .write
+        .format("delta")
+        .mode("overwrite")
+        .saveAsTable(f"`cat_olist`.`sch_silver`.`reviews`")
+)
