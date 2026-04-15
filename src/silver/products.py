@@ -39,7 +39,7 @@ products_calc = (
 
 # COMMAND ----------
 
-silver_products =\
+products_transformed =\
 products_calc.select(
     "product_id",
     "product_category_name",
@@ -54,4 +54,10 @@ products_calc.select(
 
 # COMMAND ----------
 
-silver_products.write.format("delta").mode("overwrite").saveAsTable(f"`cat_olist`.`sch_silver`.`silver_products`")
+(
+    products_transformed
+        .write
+        .format("delta")
+        .mode("overwrite")
+        .saveAsTable(f"`cat_olist`.`sch_silver`.`products`")
+)
