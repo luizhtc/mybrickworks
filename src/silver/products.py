@@ -1,5 +1,5 @@
 # Databricks notebook source
-from pyspark.sql.functions import col
+from pyspark.sql.functions import col, coalesce, lit
 from utils import read_from_bronze
 
 # COMMAND ----------
@@ -42,8 +42,8 @@ products_calc = (
 products_transformed =\
 products_calc.select(
     "product_id",
-    "product_category_name",
-    "product_category_name_english",
+    coalesce(col("product_category_name"), lit("desconhecido")).alias("product_category_name"),
+    coalesce(col("product_category_name_english"), lit("unknown")).alias("product_category_name_english"),
     col("product_name_lenght").cast("int"),
     col("product_description_lenght").cast("int"),
     col("product_photos_qty").cast("int"),
