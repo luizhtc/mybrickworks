@@ -1,6 +1,6 @@
 # Databricks notebook source
 from utils import read_from_silver
-from pyspark.sql.functions import col, countDistinct, sum as _sum, count as _count
+from pyspark.sql.functions import col, countDistinct, sum as _sum, count as _count, when, round as _round, avg
 
 # COMMAND ----------
 
@@ -21,35 +21,58 @@ orders.filter(col("order_status") == "delivered").join(
 
 # COMMAND ----------
 
-order_items.groupby("seller_id","seller_state").agg(
-    countDistinct(col("order_id")).alias("total_orders"),
-    _sum(col("price")).alias("total_revenue")
-).join(
-    valid_sellers,
-    on="seller_id",
-    how="inner"
-).display()
+order_items_valid_sellers =\
+(
+    order_items
+    .select("order_id","seller_id")
+    .join(valid_sellers, on="seller_id", how="inner")
+    .distinct()
+)
 
 # COMMAND ----------
 
-reviews.display()
-
-# COMMAND ----------
-
-order_seller = order_items.select("order_id","seller_id").distinct()
-
-# COMMAND ----------
-
-order_seller.join(
-    orders,
+seller_time =\
+orders.select("order_id","is_late").join(
+    order_items_valid_sellers,
     on="order_id",
     how="inner"
-).display()
+).groupby(
+    "seller_id"
+).agg(
+    _round(_sum(when(~col("is_late"), 1).otherwise(0)) / countDistinct(col("order_id")), 2).alias("on_time_rate")
+).withColumn("late_order_pct", round(1 - col("on_time_rate"), 2))
 
 # COMMAND ----------
 
-orders.join(
+seller_earnings =\
+order_items_valid_sellers.groupby("seller_id","seller_state").agg(
+    countDistinct(col("order_id")).alias("total_orders"),
+    _sum(col("price")).alias("total_revenue")
+)
+
+# COMMAND ----------
+
+seller_earnings.display()
+
+# COMMAND ----------
+
+seller_time.display()
+
+# COMMAND ----------
+
+orders.display()
+
+# COMMAND ----------
+
+order_items.display()
+
+# COMMAND ----------
+
+seller_reviews =\
+order_items_valid_sellers.join(
     reviews,
     on="order_id",
     how="inner"
-).display()
+).groupby("seller_id").agg(
+    _round(avg(col("review_score")), 2).alias("avg_review_score")
+)
