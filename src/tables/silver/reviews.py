@@ -50,3 +50,4 @@ reviews_transformed = (
         .mode("overwrite")
         .saveAsTable(f"`cat_olist`.`sch_silver`.`reviews`")
 )
+

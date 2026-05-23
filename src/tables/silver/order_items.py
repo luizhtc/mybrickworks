@@ -40,3 +40,4 @@ order_items_join.select(
         .mode("overwrite")
         .saveAsTable(f"`cat_olist`.`sch_silver`.`order_items`")
 )
+

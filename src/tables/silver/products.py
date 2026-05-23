@@ -61,3 +61,4 @@ products_calc.select(
         .mode("overwrite")
         .saveAsTable(f"`cat_olist`.`sch_silver`.`products`")
 )
+

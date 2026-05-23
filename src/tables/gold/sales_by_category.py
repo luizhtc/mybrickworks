@@ -58,3 +58,4 @@ sales_by_category.withColumn(
         .mode("overwrite")
         .saveAsTable(f"`cat_olist`.`sch_gold`.`sales_by_category`")
 )
+

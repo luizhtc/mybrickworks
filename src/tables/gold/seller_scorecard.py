@@ -104,3 +104,4 @@ seller_scorecard =\
         .mode("overwrite")
         .saveAsTable(f"`cat_olist`.`sch_gold`.`seller_scorecard`")
 )
+
