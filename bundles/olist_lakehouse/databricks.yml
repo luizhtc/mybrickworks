@@ -1,0 +1,50 @@
+# This is a Databricks asset bundle definition for olist_lakehouse.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: olist_lakehouse
+  uuid: d107ca77-8e49-4d28-91a0-3d8345851e92
+
+include:
+  - resources/*.yml
+  - "*.local.yml"
+
+artifacts:
+  python_artifact:
+    type: whl
+    build: uv build --wheel
+
+variables:
+  # workspace_user is set in databricks.local.yml for safety reasons
+  workspace_user:
+    description: The workspace user email (set in databricks.local.yml)
+  catalog:
+    description: The catalog name for the objects to be deployed to.
+  schema:
+    description: The schema name for the objects to be deployed to.
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      # workspace.host is set in databricks.local.yml for safety reasons
+      root_path: /Workspace/Users/${var.workspace_user}/Bundles/${bundle.name}/${bundle.target}
+    variables:
+      catalog: "cat_olist"
+      schema: "sch_objects_dev"
+    permissions: 
+      - user_name: ${var.workspace_user}
+        level: CAN_MANAGE
+
+
+  prod:
+    mode: production
+    workspace:
+      # workspace.host is set in databricks.local.yml for safety reasons
+      root_path: /Workspace/Bundles/${bundle.name}/${bundle.target}
+    variables:
+      catalog: "cat_olist"
+      schema: "sch_objects_prod"
+    permissions:
+      - user_name: ${var.workspace_user}
+        level: CAN_MANAGE

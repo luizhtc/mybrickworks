@@ -1,6 +1,6 @@
 # Databricks notebook source
 from pyspark.sql.functions import col
-from utils import read_from_bronze
+from bundles.olist_lakehouse.src.tables.silver.utils import read_from_bronze
 
 # COMMAND ----------
 

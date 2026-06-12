@@ -12,7 +12,7 @@ from pyspark.sql.functions import (
 from pyspark.sql.functions import (
     sum as _sum,
 )
-from utils import read_from_silver
+from bundles.olist_lakehouse.src.tables.gold.utils import read_from_silver
 
 # COMMAND ----------
 

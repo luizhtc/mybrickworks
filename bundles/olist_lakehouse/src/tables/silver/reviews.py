@@ -1,6 +1,6 @@
 # Databricks notebook source
 from pyspark.sql.functions import col, timestamp_diff, trim, when
-from utils import parse_timestamp, read_from_bronze
+from bundles.olist_lakehouse.src.tables.silver.utils import parse_timestamp, read_from_bronze
 
 # COMMAND ----------
 

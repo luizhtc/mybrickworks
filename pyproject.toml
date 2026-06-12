@@ -1,14 +1,19 @@
 [project]
-name = "databricks-catalog-olist"
-version = "0.1.0"
-description = "Add Olist data easily to your Databricks workspace"
+name = "mybrickworks"
+version = "0.0.1"
+description = "My Databricks data platform, luizhtc"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "databricks-connect>=16.1.7",
+    "databricks-sdk>=0.117.0",
+    "pyspark>=4.1.2",
+    "pytest>=9.0.3",
+]
 
 [tool.ruff]
 target-version = "py311"
-line-length = 88
+line-length = 120
 
 [tool.ruff.lint]
 select = [

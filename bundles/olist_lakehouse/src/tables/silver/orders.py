@@ -11,7 +11,7 @@ from pyspark.sql.functions import (
 from pyspark.sql.functions import (
     sum as _sum,
 )
-from utils import parse_timestamp, read_from_bronze
+from bundles.olist_lakehouse.src.tables.silver.utils import parse_timestamp, read_from_bronze
 
 # COMMAND ----------
 

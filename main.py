@@ -1,5 +1,5 @@
 def main():
-    print("Hello from databricks-catalog-olist!")
+    print("Hello from mybrickworks!")
 
 
 if __name__ == "__main__":
