@@ -206,4 +206,14 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-.databricks
+# Databricks bundle local-only overrides (host, user, etc.)
+*.local.yml
+!*.local.yml.example
+
+.databricks/
+scratch/**
+!scratch/README.md
+**/explorations/**
+**/!explorations/README.md
+
+.vscode/
