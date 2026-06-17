@@ -9,9 +9,15 @@ include:
   - "*.local.yml"
 
 artifacts:
-  python_artifact:
+  olist_lakehouse:
     type: whl
     build: uv build --wheel
+    path: .
+
+  brickworks_core:
+    type: whl
+    build: uv build --wheel
+    path: ../../libs/brickworks_core
 
 variables:
   # workspace_user is set in databricks.local.yml for safety reasons
