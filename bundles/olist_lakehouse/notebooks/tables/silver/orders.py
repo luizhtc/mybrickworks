@@ -11,7 +11,7 @@ from pyspark.sql.functions import (
 from pyspark.sql.functions import (
     sum as _sum,
 )
-from bundles.olist_lakehouse.src.tables.silver.utils import parse_timestamp, read_from_bronze
+from bundles.olist_lakehouse.notebooks.tables.silver.utils import parse_timestamp, read_from_bronze
 
 # COMMAND ----------
 
@@ -26,9 +26,9 @@ payments = read_from_bronze("tbl_olist_order_payments_dataset")
 
 # COMMAND ----------
 
-payments_treated_types = payments.withColumn(
-    "payment_value", col("payment_value").cast("double")
-).withColumn("payment_installments", col("payment_installments").cast("int"))
+payments_treated_types = payments.withColumn("payment_value", col("payment_value").cast("double")).withColumn(
+    "payment_installments", col("payment_installments").cast("int")
+)
 
 # COMMAND ----------
 
@@ -49,9 +49,7 @@ payments_agg = (
 
 # COMMAND ----------
 
-orders_join = orders.join(customers, on="customer_id", how="left").join(
-    payments_agg, on="order_id", how="left"
-)
+orders_join = orders.join(customers, on="customer_id", how="left").join(payments_agg, on="order_id", how="left")
 
 # COMMAND ----------
 
@@ -76,8 +74,4 @@ orders_transformed = orders_join.select(
 
 # COMMAND ----------
 
-(
-    orders_transformed.write.format("delta")
-    .mode("overwrite")
-    .saveAsTable("`cat_olist`.`sch_silver`.`orders`")
-)
+(orders_transformed.write.format("delta").mode("overwrite").saveAsTable("`cat_olist`.`sch_silver`.`orders`"))

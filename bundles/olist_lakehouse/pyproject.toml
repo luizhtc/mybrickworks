@@ -5,6 +5,7 @@ description = "Data Product based on Olist datasets."
 requires-python = ">=3.12"
 dependencies = [
     "brickworks-core",
+    "kagglehub>=1.0.2",
 ]
 
 [build-system]

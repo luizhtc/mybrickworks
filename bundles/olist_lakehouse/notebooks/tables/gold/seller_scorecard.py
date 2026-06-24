@@ -12,7 +12,7 @@ from pyspark.sql.functions import (
 from pyspark.sql.functions import (
     sum as _sum,
 )
-from bundles.olist_lakehouse.src.tables.gold.utils import read_from_silver
+from bundles.olist_lakehouse.notebooks.tables.gold.utils import read_from_silver
 
 # COMMAND ----------
 
@@ -34,9 +34,7 @@ valid_sellers = (
 # COMMAND ----------
 
 order_items_valid_sellers = (
-    order_items.join(valid_sellers, on="seller_id", how="inner")
-    .select("order_id", "seller_id")
-    .distinct()
+    order_items.join(valid_sellers, on="seller_id", how="inner").select("order_id", "seller_id").distinct()
 )
 
 # COMMAND ----------
@@ -46,8 +44,7 @@ seller_time = (
     .groupBy("seller_id")
     .agg(
         _round(
-            _sum(when(~col("is_late"), 1).otherwise(0))
-            / countDistinct(col("order_id")),
+            _sum(when(~col("is_late"), 1).otherwise(0)) / countDistinct(col("order_id")),
             2,
         ).alias("on_time_rate")
     )
@@ -57,9 +54,7 @@ seller_time = (
 # COMMAND ----------
 
 seller_earnings = (
-    order_items_valid_sellers.join(
-        order_items, on=["order_id", "seller_id"], how="inner"
-    )
+    order_items_valid_sellers.join(order_items, on=["order_id", "seller_id"], how="inner")
     .groupBy(col("seller_id"))
     .agg(
         countDistinct(col("order_id")).alias("total_orders"),
@@ -91,8 +86,4 @@ seller_scorecard = (
 
 # COMMAND ----------
 
-(
-    seller_scorecard.write.format("delta")
-    .mode("overwrite")
-    .saveAsTable("`cat_olist`.`sch_gold`.`seller_scorecard`")
-)
+(seller_scorecard.write.format("delta").mode("overwrite").saveAsTable("`cat_olist`.`sch_gold`.`seller_scorecard`"))

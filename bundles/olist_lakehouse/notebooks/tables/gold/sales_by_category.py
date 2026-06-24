@@ -12,7 +12,7 @@ from pyspark.sql.functions import (
 from pyspark.sql.functions import (
     sum as _sum,
 )
-from bundles.olist_lakehouse.src.tables.gold.utils import read_from_silver
+from bundles.olist_lakehouse.notebooks.tables.gold.utils import read_from_silver
 
 # COMMAND ----------
 
@@ -22,9 +22,7 @@ products = read_from_silver("products")
 
 # COMMAND ----------
 
-orders_and_products = order_items.join(products, on="product_id", how="left").join(
-    orders, on="order_id", how="left"
-)
+orders_and_products = order_items.join(products, on="product_id", how="left").join(orders, on="order_id", how="left")
 
 # COMMAND ----------
 
@@ -32,9 +30,7 @@ orders_and_products_filtered = orders_and_products.filter("order_status = 'deliv
 
 # COMMAND ----------
 
-sales_by_category = orders_and_products_filtered.groupBy(
-    "product_category_name_english"
-).agg(
+sales_by_category = orders_and_products_filtered.groupBy("product_category_name_english").agg(
     _sum("price").alias("total_revenue"),
     countDistinct("order_id").alias("total_orders"),
     _count("*").alias("total_items_sold"),
@@ -46,9 +42,7 @@ sales_by_category = orders_and_products_filtered.groupBy(
 
 wn_revenue = Window.orderBy(col("total_revenue").desc(), col("avg_order_ticket").desc())
 
-sales_by_category_ranked = sales_by_category.withColumn(
-    "revenue_rank", rank().over(wn_revenue)
-)
+sales_by_category_ranked = sales_by_category.withColumn("revenue_rank", rank().over(wn_revenue))
 
 # COMMAND ----------
 

@@ -1,6 +1,6 @@
 # Databricks notebook source
 from pyspark.sql.functions import col, timestamp_diff, trim, when
-from bundles.olist_lakehouse.src.tables.silver.utils import parse_timestamp, read_from_bronze
+from bundles.olist_lakehouse.notebooks.tables.silver.utils import parse_timestamp, read_from_bronze
 
 # COMMAND ----------
 
@@ -34,16 +34,10 @@ reviews_transformed = (
     )
     .withColumn(
         "response_time_hours",
-        timestamp_diff(
-            "HOUR", col("review_creation_date"), col("review_answer_timestamp")
-        ),
+        timestamp_diff("HOUR", col("review_creation_date"), col("review_answer_timestamp")),
     )
 )
 
 # COMMAND ----------
 
-(
-    reviews_transformed.write.format("delta")
-    .mode("overwrite")
-    .saveAsTable("`cat_olist`.`sch_silver`.`reviews`")
-)
+(reviews_transformed.write.format("delta").mode("overwrite").saveAsTable("`cat_olist`.`sch_silver`.`reviews`"))
