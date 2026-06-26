@@ -12,3 +12,5 @@ targets:
 variables:
   workspace_user:
     default: your-email@example.com
+  kaggle_api_token:
+    default: your-token

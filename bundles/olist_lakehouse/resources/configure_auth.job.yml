@@ -1,0 +1,23 @@
+resources:
+  jobs:
+    configure_auth_job:
+      name: configure_auth_job
+      tasks:
+        - task_key: task_python_script
+          spark_python_task:
+            python_file: ../src/configure_kaggle_auth.py
+          min_retry_interval_millis: 900000
+          disable_auto_optimization: true
+          environment_key: default
+      queue:
+        enabled: true
+      parameters:
+        - name: kaggle_api_token
+          default: ${var.kaggle_api_token}
+      environments:
+        - environment_key: default
+          spec:
+            dependencies:
+              - ../dist/*.whl
+            environment_version: "4"
+      performance_target: PERFORMANCE_OPTIMIZED
