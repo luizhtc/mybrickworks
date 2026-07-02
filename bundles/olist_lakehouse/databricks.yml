@@ -11,12 +11,12 @@ include:
 artifacts:
   olist_lakehouse:
     type: whl
-    build: uv build --wheel
+    build: uv build --wheel --out-dir dist
     path: .
 
   brickworks_core:
     type: whl
-    build: uv build --wheel
+    build: uv build --wheel --out-dir dist
     path: ../../libs/brickworks_core
 
 variables:

@@ -1,0 +1,14 @@
+resources:
+  jobs:
+    download_datasets_job:
+      name: download_datasets_job
+
+      tasks:
+        - task_key: run_python_script
+          spark_python_task:
+            python_file: ../src/olist_lakehouse/download_datasets.py
+
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "4"
