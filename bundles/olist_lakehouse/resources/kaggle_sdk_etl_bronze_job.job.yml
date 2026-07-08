@@ -1,0 +1,29 @@
+resources:
+  jobs:
+    kaggle_sdk_etl_bronze_job:
+      name: kaggle_sdk_etl_bronze_job
+      tasks:
+        - task_key: kaggle_olist_datasets_iterator
+          for_each_task:
+            inputs: '["olist_customers_dataset.csv","olist_geolocation_dataset.csv","olist_order_items_dataset.csv","olist_order_payments_dataset.csv","olist_order_reviews_dataset.csv","olist_orders_dataset.csv","olist_products_dataset.csv","olist_sellers_dataset.csv","product_category_name_translation.csv"]'
+            task:
+              task_key: kaggle_sdk_etl_iteration
+              notebook_task:
+                notebook_path: ../notebooks/ingestion/kaggle_sdk_etl.ipynb
+                base_parameters:
+                  dataset: "{{input}}"
+                source: WORKSPACE
+              min_retry_interval_millis: 900000
+              disable_auto_optimization: true
+              environment_key: default
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
+
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "4"
+            dependencies:
+              - ../dist/*.whl
+              - kagglehub>=1.0.2

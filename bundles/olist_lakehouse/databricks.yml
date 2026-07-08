@@ -16,7 +16,7 @@ artifacts:
 
   brickworks_core:
     type: whl
-    build: uv build --wheel --out-dir dist
+    build: uv build --wheel --out-dir ../../bundles/olist_lakehouse/dist
     path: ../../libs/brickworks_core
 
 variables:
