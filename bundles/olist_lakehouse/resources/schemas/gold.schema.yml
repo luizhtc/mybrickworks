@@ -1,0 +1,8 @@
+resources:
+  schemas:
+    gold:
+      name: gold
+      catalog_name: ${var.catalog}
+      comment: 'Organizational schema including gold tables and objects in the medallion architecture of the lakehouse.'
+      lifecycle:
+        prevent_destroy: true

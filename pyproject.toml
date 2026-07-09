@@ -1,18 +1,29 @@
 [project]
 name = "mybrickworks"
 version = "0.0.1"
-description = "My Databricks data platform, luizhtc"
+description = "My Databricks data platform, by luizhtc"
 readme = "README.md"
-requires-python = ">=3.11"
-dependencies = [
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.uv.workspace]
+members = ["libs/*", "bundles/*"]
+
+[tool.uv.sources]
+brickworks-core = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "pip>=26.1",
     "databricks-connect>=16.1.7",
     "databricks-sdk>=0.117.0",
-    "pyspark>=4.1.2",
-    "pytest>=9.0.3",
+    "delta-spark>=3.2.0",
+    "pytest>=9.1.0",
+    "ruff>=0.15.15",
 ]
 
 [tool.ruff]
-target-version = "py311"
+target-version = "py312"
 line-length = 120
 
 [tool.ruff.lint]
@@ -26,17 +37,13 @@ select = [
     "S",   # flake8-bandit (security checks for data pipelines)
     "NPY", # numpy-specific rules
 ]
-
 ignore = ["F821"]
 
 [tool.ruff.lint.isort]
-# Treat specific internal packages as first-party
-known-first-party = ["src"]
+known-first-party = ["brickworks_core", "olist_lakehouse"]
 
 [tool.ruff.format]
 quote-style = "double"
 
-[dependency-groups]
-dev = [
-    "ruff>=0.15.15",
-]
+[tool.pytest.ini_options]
+testpaths = ["libs", "bundles"]

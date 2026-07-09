@@ -3,24 +3,31 @@
 bundle:
   name: olist_lakehouse
   uuid: d107ca77-8e49-4d28-91a0-3d8345851e92
+  engine: direct
 
 include:
   - resources/*.yml
+  - resources/**/*.yml
   - "*.local.yml"
 
 artifacts:
-  python_artifact:
+  olist_lakehouse:
     type: whl
-    build: uv build --wheel
+    build: uv build --wheel --out-dir dist
+    path: .
+
+  brickworks_core:
+    type: whl
+    build: uv build --wheel --out-dir ../../bundles/olist_lakehouse/dist
+    path: ../../libs/brickworks_core
 
 variables:
   # workspace_user is set in databricks.local.yml for safety reasons
   workspace_user:
     description: The workspace user email (set in databricks.local.yml)
   catalog:
-    description: The catalog name for the objects to be deployed to.
-  schema:
-    description: The schema name for the objects to be deployed to.
+    description: The default project catalog.
+    default: olist
 
 targets:
   dev:
@@ -29,9 +36,6 @@ targets:
     workspace:
       # workspace.host is set in databricks.local.yml for safety reasons
       root_path: /Workspace/Users/${var.workspace_user}/Bundles/${bundle.name}/${bundle.target}
-    variables:
-      catalog: "cat_olist"
-      schema: "sch_objects_dev"
     permissions: 
       - user_name: ${var.workspace_user}
         level: CAN_MANAGE
@@ -42,9 +46,6 @@ targets:
     workspace:
       # workspace.host is set in databricks.local.yml for safety reasons
       root_path: /Workspace/Bundles/${bundle.name}/${bundle.target}
-    variables:
-      catalog: "cat_olist"
-      schema: "sch_objects_prod"
     permissions:
       - user_name: ${var.workspace_user}
         level: CAN_MANAGE

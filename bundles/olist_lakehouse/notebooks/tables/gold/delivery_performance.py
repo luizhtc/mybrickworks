@@ -16,7 +16,7 @@ from pyspark.sql.functions import (
 from pyspark.sql.functions import (
     sum as _sum,
 )
-from bundles.olist_lakehouse.src.tables.gold.utils import read_from_silver
+from bundles.olist_lakehouse.notebooks.tables.gold.utils import read_from_silver
 
 # COMMAND ----------
 
@@ -48,9 +48,7 @@ delivery_performance = (
 # COMMAND ----------
 
 wn_performance = Window.orderBy(col("on_time_rate").desc())
-delivery_performance_ranked = delivery_performance.withColumn(
-    "performance_rank", rank().over(wn_performance)
-)
+delivery_performance_ranked = delivery_performance.withColumn("performance_rank", rank().over(wn_performance))
 
 # COMMAND ----------
 
