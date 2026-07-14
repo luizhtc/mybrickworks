@@ -1,4 +1,7 @@
-from olist_lakehouse.transformations import add_metadata
+from olist_lakehouse.transformations import add_metadata, parse_timestamp
 
 
-__all__ = ["add_metadata"]
+__all__ = [
+    "add_metadata",
+    "parse_timestamp"
+]
