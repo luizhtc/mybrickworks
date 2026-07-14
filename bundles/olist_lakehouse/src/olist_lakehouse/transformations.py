@@ -13,3 +13,17 @@ def add_metadata(df: DataFrame) -> DataFrame:
     """
     df = df.withColumn("meta_updated_ts", current_timestamp())
     return df
+
+
+def parse_timestamp(column: Column):
+    """Parses a string formatted column into a timestamp column given formats
+
+    Args:
+        column (Column): The column to be parsed.
+
+    Returns:
+        Column: The parsed column with the timestamp information or NULL in case of
+        parsing failure.
+    """
+    FORMATS = ["yyyy-MM-dd HH:mm:ss"]
+    return coalesce(*[try_to_timestamp(column, lit(fmt)) for fmt in FORMATS])
