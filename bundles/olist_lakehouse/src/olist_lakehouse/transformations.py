@@ -1,5 +1,5 @@
-from pyspark.sql import DataFrame
-from pyspark.sql.functions import current_timestamp
+from pyspark.sql import Column, DataFrame
+from pyspark.sql.functions import current_timestamp, coalesce, lit, try_to_timestamp
 
 
 def add_metadata(df: DataFrame) -> DataFrame:

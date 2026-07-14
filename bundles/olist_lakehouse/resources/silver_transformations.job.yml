@@ -1,0 +1,50 @@
+resources:
+  jobs:
+    silver_transformations:
+      name: silver_transformations
+
+      tasks:
+        - task_key: order_items
+          notebook_task:
+            notebook_path: ../notebooks/silver/order_items.ipynb
+            source: WORKSPACE
+          environment_key: default
+
+        - task_key: orders
+          notebook_task:
+            notebook_path: ../notebooks/silver/orders.ipynb
+            source: WORKSPACE
+          environment_key: default
+
+        - task_key: products
+          notebook_task:
+            notebook_path: ../notebooks/silver/products.ipynb
+            source: WORKSPACE
+          environment_key: default
+
+        - task_key: reviews
+          notebook_task:
+            notebook_path: ../notebooks/silver/reviews.ipynb
+            source: WORKSPACE
+          environment_key: default
+
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
+
+      parameters:
+        - name: in_catalog
+          default: ${var.catalog}
+        - name: in_schema
+          default: ${resources.schemas.bronze.name}
+        - name: out_catalog
+          default: ${var.catalog}
+        - name: out_schema
+          default: ${resources.schemas.silver.name}
+
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "4"
+            dependencies:
+              - ../dist/*.whl
