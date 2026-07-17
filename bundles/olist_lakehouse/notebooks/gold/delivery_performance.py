@@ -6,22 +6,29 @@ from pyspark.sql.functions import (
     countDistinct,
     rank,
     when,
-)
-from pyspark.sql.functions import (
     max as _max,
-)
-from pyspark.sql.functions import (
     round as _round,
-)
-from pyspark.sql.functions import (
     sum as _sum,
 )
-from bundles.olist_lakehouse.notebooks.tables.gold.utils import read_from_silver
 
 # COMMAND ----------
 
-orders = read_from_silver("orders")
-order_items = read_from_silver("order_items")
+dbutils.widgets.text("in_catalog", "")
+dbutils.widgets.text("in_schema", "")
+dbutils.widgets.text("out_catalog", "")
+dbutils.widgets.text("out_schema", "")
+
+# COMMAND ----------
+
+in_catalog = dbutils.widgets.get("in_catalog")
+in_schema = dbutils.widgets.get("in_schema")
+out_catalog = dbutils.widgets.get("out_catalog")
+out_schema = dbutils.widgets.get("out_schema")
+
+# COMMAND ----------
+
+orders = spark.read.table(f"{in_catalog}.{in_schema}.orders")
+order_items = spark.read.table(f"{in_catalog}.{in_schema}.order_items")
 
 # COMMAND ----------
 

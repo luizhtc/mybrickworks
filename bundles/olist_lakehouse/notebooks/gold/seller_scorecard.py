@@ -87,3 +87,4 @@ seller_scorecard = (
 # COMMAND ----------
 
 (seller_scorecard.write.format("delta").mode("overwrite").saveAsTable("`cat_olist`.`sch_gold`.`seller_scorecard`"))
+

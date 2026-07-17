@@ -51,3 +51,4 @@ sales_by_category_ranked = sales_by_category.withColumn("revenue_rank", rank().o
     .mode("overwrite")
     .saveAsTable("`cat_olist`.`sch_gold`.`sales_by_category`")
 )
+

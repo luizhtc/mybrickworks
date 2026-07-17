@@ -1,7 +1,7 @@
 resources:
   jobs:
-    kaggle_ingestion_bronze:
-      name: kaggle_ingestion_bronze
+    bronze_kaggle_ingestion:
+      name: bronze_kaggle_ingestion
 
       tasks:
         - task_key: kaggle_ingestion_iterator
@@ -10,7 +10,7 @@ resources:
             task:
               task_key: kaggle_ingestion_notebook_iteration
               notebook_task:
-                notebook_path: ../notebooks/ingestion/kaggle_ingestion_bronze.ipynb
+                notebook_path: ../notebooks/bronze/kaggle_ingestion.ipynb
                 base_parameters:
                   dataset: "{{input}}"
                 source: WORKSPACE
